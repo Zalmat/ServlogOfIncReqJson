@@ -10,10 +10,6 @@ var bodyParser = require('body-parser');
 var time = require('./dateTimeFunc');
 
 
-//для роутинга - убрать
-//var greet = express.Router()
-
-
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
@@ -25,13 +21,24 @@ app.post('/ReciveJSON', function (req,res) {
 	console.dir(req.hostname);
 	res.send("  Thn'x Mean  ");
 
+	//проверяем существование файла, если нет - создаем.
+	const path = "./"+time.getDateTimeToString("dd-MM-yyyy")+".txt"
+
+	try {
+	  if (fs.existsSync(path)) {
+		//file exists
+	  }
+	} catch(err) {
+	  fs.writeFileSync("./"+time.getDateTimeToString("dd-MM-yyyy")+".txt");
+	}
+	//Проверка окончена
 	
 
-	fs.appendFile("hello.txt",`${newLineChar} [block] [time]${time.getDateTimeToString("dd-MM-yyyy hh:mm:ss")} [baseUrl]${JSON.stringify(req.baseUrl)} [host]${JSON.stringify(req.hostname)}  [body]${JSON.stringify(req.body)} [/block]`, function (error) {
+	fs.appendFile(time.getDateTimeToString("dd-MM-yyyy")+".txt",`${newLineChar} [block] [time]${time.getDateTimeToString("dd-MM-yyyy hh:mm:ss")} [baseUrl]${JSON.stringify(req.baseUrl)} [hostname]${JSON.stringify(req.hostname)}  [body]${JSON.stringify(req.body)} [/block]`, function (error) {
 		if (error) throw error; //Если возникла ошибка
 		console.log("Асинхронно заебенил отчётик. Содержимое: ");
 		let data = fs.readFileSync("hello.txt", "utf8");
-		console.log(data);// Выводим прочитанное
+		//console.log(data);// Выводим прочитанное
 		var myHost = JSON.stringify(req.baseUrl);
 	});
 });
@@ -55,8 +62,6 @@ console.log("Здоровенько булы");
 console.log('Слушаю на http://' + getServerIp()+':' + myPort + '/ReciveJSON');
 
 
-//читать последнюю строку
-//Нет файла - создавать
-//либо хранить тысячу строччек, либо делать файлики
+
 //фиксировать источник запроса -?
-// создавать файл с датой текущего дня и туда логировать
+//Фиксировать DN входящего запроса?
