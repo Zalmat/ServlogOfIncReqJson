@@ -22,7 +22,7 @@ app.post('/ReciveJSON', function (req,res) {
 	res.send("  Thn'x Mean  ");
 
 	//проверяем существование файла, если нет - создаем.
-	const path = "./"+time.getDateTimeToString("dd-MM-yyyy")+".txt"
+	const path = "./logs/"+time.getDateTimeToString("dd-MM-yyyy")+".txt"
 
 	try {
 	  if (fs.existsSync(path)) {
@@ -34,10 +34,10 @@ app.post('/ReciveJSON', function (req,res) {
 	//Проверка окончена
 	
 
-	fs.appendFile(time.getDateTimeToString("dd-MM-yyyy")+".txt",`${newLineChar} [block] [time]${time.getDateTimeToString("dd-MM-yyyy hh:mm:ss")} [baseUrl]${JSON.stringify(req.baseUrl)} [hostname]${JSON.stringify(req.hostname)}  [body]${JSON.stringify(req.body)} [/block]`, function (error) {
+	fs.appendFile("./logs/" + time.getDateTimeToString("dd-MM-yyyy")+".txt",`${newLineChar} [block] [time]${time.getDateTimeToString("dd-MM-yyyy hh:mm:ss")} [baseUrl]${JSON.stringify(req.baseUrl)} [hostname]${JSON.stringify(req.hostname)}  [body]${JSON.stringify(req.body)} [/block]`, function (error) {
 		if (error) throw error; //Если возникла ошибка
-		console.log("Асинхронно заебенил отчётик. Содержимое: ");
-		let data = fs.readFileSync("hello.txt", "utf8");
+		//console.log("Залогировал содержимое: "); - использовалось для тестов.
+		//let data = fs.readFileSync(time.getDateTimeToString("dd-MM-yyyy")+".txt", "utf8"); - не актуально.
 		//console.log(data);// Выводим прочитанное
 		var myHost = JSON.stringify(req.baseUrl);
 	});
