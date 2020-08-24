@@ -44,9 +44,13 @@ app.post('/ReciveJSON', function (req,res) {
 	}
 	//Проверка окончена
 	
+//Сохраняем логи как json.
+//slice убирает первый ипоследний знак у тела получаемого json
+fs.appendFile("./logs/" + time.getDateTimeToString("dd-MM-yyyy")+".txt",`${newLineChar} {"description":[{"time":"${time.getDateTimeToString("dd-MM-yyyy hh:mm:ss")}","baseUrl":"${JSON.stringify(req.baseUrl)}","hostname":"${JSON.stringify(req.hostname)}"}], ${JSON.stringify(req.body).slice(1, -1)}}`,
 
-	fs.appendFile("./logs/" + time.getDateTimeToString("dd-MM-yyyy")+".txt",`${newLineChar} [block] [time]${time.getDateTimeToString("dd-MM-yyyy hh:mm:ss")} [baseUrl]${JSON.stringify(req.baseUrl)} [hostname]${JSON.stringify(req.hostname)}  [body]${JSON.stringify(req.body)} [/block]`, function (error) {
-		if (error) throw error; //Если возникла ошибка
+
+ function (error) {
+		if (error) throw error; //Если возникла ошибка 
 		//console.log("Залогировал содержимое: "); - использовалось для тестов.
 		//let data = fs.readFileSync(time.getDateTimeToString("dd-MM-yyyy")+".txt", "utf8"); - не актуально.
 		//console.log(data);// Выводим прочитанное
