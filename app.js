@@ -72,8 +72,12 @@ function getServerIp() {
 	return values.length ? values[0].address : '0.0.0.0';
   }
 
-//Указалываем https
-var myPort = 3000;
-https.createServer(options, app).listen(myPort);
+//Указывем https вторым вариантом.
+var myPortHttps = 3000;
+var myPortHttp = 3010;
+https.createServer(options, app).listen(myPortHttps);
+app.listen(myPortHttp);
 console.log("Здоровенько булы");
-console.log('Слушаю на https://' + getServerIp()+':' + myPort + '/ReciveJSON');
+console.log('Слушаю на http://' + getServerIp()+':' + myPortHttp + '/ReciveJSON');
+console.log('Слушаю на https://' + getServerIp()+':' + myPortHttps + '/ReciveJSON');
+
